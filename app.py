@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 from flask import request
-import openmeteoapi
+from backend import openmeteoapi
 
 # instantiate the app
 app = Flask(__name__)
