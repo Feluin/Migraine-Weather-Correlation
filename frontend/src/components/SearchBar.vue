@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import axios from 'axios'
+import { useMigrainestore } from '../stores/predictedMigStore.js'
 
+const migrainestore = useMigrainestore()
 
 let city = ref('')
 let lat = ref(0.0)
@@ -37,9 +39,10 @@ function lul() {
 }
 
 function requestMigraine() {
-  axios.get(`http://localhost:5000/data?lat=${lat.value}&${long.value}`)
+  axios.get(`http://localhost:5000/data?lat=${lat.value}&${long.value}`, { transformResponse: (data) => JSON.parse(data) })
     .then(res => {
       console.log(res.data)
+      migrainestore.daylist = res.data
     })
 }
 </script>
@@ -59,9 +62,10 @@ function requestMigraine() {
   <v-row>
     <v-date-input
       label="Select range"
+      show-adjacent-months
       max-width="368"
       multiple="range" v-model="dates"></v-date-input>
-    <v-btn text="Search" @click="requestMigraine "></v-btn>
+    <v-btn text="Search" @click="requestMigraine"></v-btn>
   </v-row>
 </template>
 

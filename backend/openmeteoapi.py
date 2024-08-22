@@ -5,7 +5,7 @@ import requests_cache
 from retry_requests import retry
 from scipy import signal
 from scipy.ndimage import shift
-
+import json
 # Setup the Open-Meteo API client with cache and retry on error
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
 retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
@@ -50,8 +50,8 @@ def getData(lat, long, start, end):
         loss = (minim["surface_pressure"] - maxim["surface_pressure"])
         res={
             "loss": loss,
-            "minima": minim.to_dict(),
-            "maxima": maxim.to_dict()
+            "minima": json.loads(minim.to_json()),
+            "maxima": json.loads(maxim.to_json())
         }
         results.append(res)
 
