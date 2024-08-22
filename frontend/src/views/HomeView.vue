@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import SearchBar from '../components/SearchBar.vue'
+import MCal from '../components/MCal.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <SearchBar></SearchBar>
+    <MCal></MCal>
   </main>
 </template>
