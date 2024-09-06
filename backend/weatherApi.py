@@ -17,9 +17,10 @@ openmeteo = openmeteo_requests.Client(session=retry_session)
 # The order of variables in hourly or daily is important to assign them correctly below
 url = "https://api.open-meteo.com/v1/forecast"
 params = {
-    "latitude": 52.52,
-    "longitude": 13.41,
+    "latitude": 49.40768,
+    "longitude": 8.69079,
     "forecast_days": 16,
+    "past_days": 5,
     "hourly": "surface_pressure"
 }
 responses = openmeteo.weather_api(url, params=params)
@@ -44,7 +45,7 @@ hourly_data = {"date": pd.date_range(
 ), "surface_pressure": hourly_surface_pressure}
 
 hourly_dataframe = pd.DataFrame(data=hourly_data)
-hourly_dataframe['MA'] = hourly_dataframe["surface_pressure"].rolling(window=15).mean()
+hourly_dataframe['MA'] = hourly_dataframe["surface_pressure"].rolling(window=10, center=True).mean()
 maxima = signal.argrelextrema(hourly_dataframe['MA'].values, np.greater)[0]
 minima = signal.argrelextrema(hourly_dataframe["MA"].values, np.less)[0]
 if minima[0] < maxima[0]:
@@ -60,7 +61,7 @@ for i, idx in enumerate(minima):
     maxim = hourly_dataframe.iloc[maxima[i]]
     minim = hourly_dataframe.iloc[minima[i]]
     loss = (minim["surface_pressure"] - maxim["surface_pressure"])
-    if loss < -5:
+    if loss < -3:
         print(str(maxim["date"]) + " \t " + str(minim["date"]) + " \t " + str(
             (minim["surface_pressure"] - maxim["surface_pressure"])) + " \t " + str(
             maxim["surface_pressure"]) + " \t " + str(

@@ -7,5 +7,10 @@ export const useMigrainestore = defineStore('migrainedays', () => {
     setdays = (newdays) => {
       daylist.value = newdays
     }
-  return { daylist, setdays }
+  let city = ref('')
+  let lat = ref(0.0)
+  let long = ref(0.0)
+  let start = ref(new Date())
+  let end = ref(new Date())
+  return { daylist, setdays, city, lat, long, start, end }
 })

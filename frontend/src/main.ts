@@ -15,7 +15,6 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-components
 app.use(createVuetify({
 
   directives, components: { ...components, VCalendar, VDateInput }
